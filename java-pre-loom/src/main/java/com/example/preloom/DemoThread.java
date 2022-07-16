@@ -1,14 +1,14 @@
-package com.example.loomtest;
+package com.example.preloom;
 
 public class DemoThread {
 
-    private static int NUM_THREADS = 1000; // Pass -Xss1M -Xm1G Jvm Args and make it higher to 10000
+    private static int NUM_THREADS = 100000; // Pass -Xss1M -Xm1G Jvm Args and make it higher to 10000
 
     private static void handleUserRequest() {
         System.out.println("Starting thread " + Thread.currentThread());
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(30000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -27,9 +27,13 @@ public class DemoThread {
         System.out.println("Starting main " + Thread.currentThread());
 
         for (int j= 0; j < NUM_THREADS; j++) {
-            new Thread(() -> handleUserRequest()).start();
+            startThread();
         }
 
         System.out.println("Ending main");
+    }
+
+    private static void startThread() {
+        new Thread(() -> handleUserRequest()).start();
     }
 }
