@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: employee-service
+  profiles:
+    active: local
+  liquibase:
+    change-log: classpath:db-changelog.xml
+  datasource:
+    url: jdbc:mysql://localhost:3306/employee-service?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=UTC
+    username: backend
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    openInView: false
+    show_sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      properties:
+        hibernate.cache.use_query_cache: false
+        hibernate.generate_statistics: true
