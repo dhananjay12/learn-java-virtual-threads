@@ -1,0 +1,5 @@
+### Query Data Request
+
+# GET request to fetch employee data
+GET localhost:8080/employee/2
+
