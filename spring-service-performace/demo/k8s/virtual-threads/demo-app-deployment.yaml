@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-app
+  template:
+    metadata:
+      labels:
+        app: demo-app
+    spec:
+      containers:
+        - env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:MaxRAMPercentage=70.0 -Djava.security.egd=file:/dev/urandom"
+            - name: spring.threads.virtual.enabled
+              value: "true"
+          image: dhananjay12/demo-app-java-21:latest
+          name: demo-app
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "256Mi"  # Request 256MB of memory
+              cpu: "0.5"       # Request 0.5 CPU cores
+            limits:
+              memory: "512Mi"  # Limit memory to 512MB
+              cpu: "1"         # Limit CPU to 1 core
+          ports:
+            - containerPort: 8080
