@@ -5,24 +5,38 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.0-M3</version>
+		<version>3.2.0-RC2</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
+	<groupId>com.example.spring</groupId>
+	<artifactId>loom-demo</artifactId>
+	<version>0.0.1</version>
+	<name>loom-demo</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>21</java.version>
 		<jib-maven-plugin.version>3.3.2</jib-maven-plugin.version>
 		<docker.image.url>dhananjay12</docker.image.url>
-		<docker.image.prefix>loom</docker.image.prefix>
 	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -56,15 +70,17 @@
 				<version>${jib-maven-plugin.version}</version>
 				<configuration>
 					<from>
-						<image></image>
+						<!--https://console.cloud.google.com/gcr/images/distroless/global/java21-debian12  nonroot-->
+						<image>gcr.io/distroless/java21-debian12@sha256:9517ee35e04822bd511011ae40e8a3f707a7a2a837ce45cf59d20b6d9c50c0b3</image>
 					</from>
 					<to>
-						<image>${docker.image.url}/${docker.image.prefix}-${project.artifactId}</image>
+						<image>${docker.image.url}/${project.artifactId}</image>
 						<tags>
 							<tag>${project.version}</tag>
 						</tags>
 					</to>
 					<container>
+						<creationTime>USE_CURRENT_TIMESTAMP</creationTime>
 						<mainClass>com.example.demo.DemoApplication</mainClass>
 						<ports>
 							<port>8080</port>
