@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  loom-demo:
+    image: "dhananjay12/loom-demo:0.0.1"
+    environment:
+      spring.threads.virtual.enabled: "false"
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 256M
+        reservations:
+          cpus: "0.50"
+          memory: 128M
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./config/prometheus/:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - 9090:9090
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - 9100:9100
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./config/grafana/provisioning/:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+
+volumes:
+  grafana_data:
